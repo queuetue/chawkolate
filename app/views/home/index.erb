@@ -1,0 +1,56 @@
+<div id="X">TEST</div>
+
+<% if current_user %>
+	x<%= current_user.inspect %>x
+<% else %>
+	<%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
+<% end %>
+
+<table>
+<tr><th>Key</th><th>Value</th><th>Count</th><th>Min</th><th>Max</th></tr>
+<tr>
+	<td id="key">1</td>
+	<td id="value">1</td>
+	<td id="count">1</td>
+	<td id="min">1</td>
+	<td id="max">1</td>
+	<td id="updated">1</td>
+</tr>
+
+<script>
+    // THIS IS DISABLED BECAUSE IN DEVELOPMENT MODE, IT LOCKS UP THE SERVER
+    // Ensure you have fixed the threading issues in event_controller before
+    // reactivaating.
+    
+	// function initialize() {
+	//     var source = new EventSource('/event/1/listen');
+
+	//     source.addEventListener('update', function(e) {
+	//         console.log("Received "+e.data);
+	//         updateItemsPage(e.data);
+	//     }, false);
+	 
+	//     source.addEventListener('error', function(e) {
+	//         if (e.readyState == EventSource.CLOSED) {
+	//             console.log("Connection was closed.");
+	//         }else{
+	//             console.log("Something else");
+	//         }
+	//     }, false);
+	// };
+
+	// function updateItemsPage(event) {
+	// 	data = jQuery.parseJSON( event );
+	// 	console.log(data);
+	//     var item = $('#value').text(data.data.last.v);
+	//     var item = $('#min').text(data.data.last.v);
+	//     var item = $('#max').text(data.data.last.v);
+	//     var item = $('#count').text(data.data.length);
+	//     var item = $('#updated').text(data.data.prepared_at);
+	// }
+
+	// $(document).ready(function () {
+	// 		initialize();
+	// 	}
+	// )
+</script>
