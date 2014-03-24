@@ -6,7 +6,7 @@ class Api::V1::NodesController < ApplicationController
 
   protect_from_forgery with: :null_session
   before_filter :restrict_access
-  before_filter :restrict_access_by_key, :only=>[:last,:add_points,:increment,:decrement,:clear,:statistics]
+  before_filter :restrict_access_by_key, :only=>[:last,:range, :since,:add_points,:increment,:decrement,:clear,:statistics]
 
   include Api::V1::Authentic
 
@@ -54,12 +54,40 @@ class Api::V1::NodesController < ApplicationController
 
   def last
     if @addr.points.length > 0
-      payload_out @addr.points.last(1000).collect {|point| point_for_transport point}
+      i = 0
+      payload_out @addr.points.last(1000).collect {|point| point_for_transport point,i+=1}
     else
       payload_out
     end
   end
 
+  def range
+    if params[:from] and params[:to] 
+      points = @addr.points.where("observed_at >=? and observed_at <=?",params[:from], params[:to])
+      if points.length > 0
+        i = 0
+        payload_out points.collect {|point| point_for_transport point,i+=1}
+      else
+        payload_out
+      end
+    else
+      payload_out( nil, "from and to are not valid")
+    end
+  end
+
+  def since
+    if params[:from]
+      points = @addr.points.where("observed_at >=? and observed_at <=?",params[:from], Time.now.to_f)
+      if points.length > 0
+        i = 0
+        payload_out points.collect {|point| point_for_transport point,i+=1}
+      else
+        payload_out
+      end
+    else
+      payload_out( nil, "from is not valid")
+    end
+  end
 
 private
 
@@ -84,8 +112,8 @@ private
     meta
   end
 
-  def point_for_transport(point)
-    {"v"=>point.value,"t"=>point.observed_at,"m"=>JSON.parse(point.meta || "{}")};
+  def point_for_transport(point, index=nil)
+    {"v"=>point.value,"t"=>point.observed_at,"m"=>JSON.parse(point.meta || "{}")}.merge(index ? {"i"=>index} : {})
   end
 
   def payload_out (data = nil,message = nil)
