@@ -45,6 +45,19 @@ ActiveRecord::Schema.define(version: 20140322230012) do
 
   add_index "chawk_points", ["node_id"], name: "index_chawk_points_node"
 
+  create_table "chawk_ranges", force: true do |t|
+    t.string   "subkey"
+    t.integer  "parent_node_id"
+    t.integer  "data_node_id"
+    t.float    "start_ts"
+    t.float    "stop_ts"
+    t.integer  "beats"
+    t.integer  "default"
+    t.datetime "expires"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "chawk_relations", force: true do |t|
     t.boolean "admin",    default: false
     t.boolean "read",     default: false
@@ -55,6 +68,16 @@ ActiveRecord::Schema.define(version: 20140322230012) do
 
   add_index "chawk_relations", ["agent_id"], name: "index_chawk_relations_agent"
   add_index "chawk_relations", ["node_id"], name: "index_chawk_relations_node"
+
+  create_table "chawk_usage_records", force: true do |t|
+    t.integer  "agent_id"
+    t.integer  "node_id"
+    t.string   "description"
+    t.float    "time"
+    t.float    "space"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "chawk_values", force: true do |t|
     t.float    "observed_at"

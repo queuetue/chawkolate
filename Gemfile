@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.4'
-gem 'chawk_rails', "0.0.5"
+gem 'chawk_rails', "0.3.0"
 gem "redis"
 gem 'omniauth-twitter'
 gem 'omniauth-facebook'
@@ -19,6 +19,7 @@ group :development do
 	gem "dotenv"
   gem "better_errors"
   gem 'meta_request'
+	gem 'sqlite3'
 end
 
 group :test do
