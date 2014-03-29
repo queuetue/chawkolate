@@ -17,6 +17,8 @@ gem 'nifty-generators'
 
 group :development do
 	gem "dotenv"
+  gem "better_errors"
+  gem 'meta_request'
 end
 
 group :test do
