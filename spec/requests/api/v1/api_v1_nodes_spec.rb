@@ -61,7 +61,7 @@ describe "Api::V1::Nodes" do
     put api_v1_node_clear_path(node_id:"test:path"), nil, {:authorization => %{Token token="#{u.api_client_id}/#{u.api_keys.first.access_token}"}}
     response.status.should be(200)
     payload = JSON.parse(response.body)
-    payload.keys.length.should be 2  # addr + prepared_at
+    payload.keys.length.should be 2  # node + prepared_at
   end
 
   it "gives statistics" do
@@ -71,13 +71,13 @@ describe "Api::V1::Nodes" do
     put api_v1_node_clear_path(node_id:"test:path"), nil, {:authorization => %{Token token="#{u.api_client_id}/#{u.api_keys.first.access_token}"}}
     response.status.should be(200)
     payload = JSON.parse(response.body)
-    payload.keys.length.should be 2  # addr + prepared_at
+    payload.keys.length.should be 2  # node + prepared_at
   end
 
   it "gets last X" do
     u = FactoryGirl.create :user
-    addr = Chawk.addr(u.agent,"test:path")
-    addr.add_points [1,2,3,4,5,6,7,8,9,10]
+    node = Chawk.node(u.agent,"test:path")
+    node.add_points [1,2,3,4,5,6,7,8,9,10]
     get api_v1_node_last_path(node_id:"test:path"), nil, :authorization => %{Token token="#{u.api_client_id}/#{u.api_keys.first.access_token}"}
     response.status.should be(200)
     payload = JSON.parse(response.body)
@@ -87,13 +87,13 @@ describe "Api::V1::Nodes" do
   it "gets range" do
     t= Time.now
     u = FactoryGirl.create :user
-    addr = Chawk.addr(u.agent,"test:path")
-    addr._insert_point(1,(t-1000).to_f)
-    addr._insert_point(2,(t-1000).to_f)
-    addr._insert_point(3,(t-1000).to_f)
-    addr._insert_point(4,(t-400).to_f)
-    addr._insert_point(5,(t-400).to_f)
-    addr._insert_point(6,(t-400).to_f)
+    node = Chawk.node(u.agent,"test:path")
+    node._insert_point(1,(t-1000).to_f)
+    node._insert_point(2,(t-1000).to_f)
+    node._insert_point(3,(t-1000).to_f)
+    node._insert_point(4,(t-400).to_f)
+    node._insert_point(5,(t-400).to_f)
+    node._insert_point(6,(t-400).to_f)
 
     get api_v1_node_last_path(node_id:"test:path"), nil, :authorization => %{Token token="#{u.api_client_id}/#{u.api_keys.first.access_token}"}
     response.status.should be(200)
@@ -120,13 +120,13 @@ describe "Api::V1::Nodes" do
   it "gets since" do
     t= Time.now
     u = FactoryGirl.create :user
-    addr = Chawk.addr(u.agent,"test:path")
-    addr._insert_point(1,(t-1000).to_f)
-    addr._insert_point(2,(t-1000).to_f)
-    addr._insert_point(3,(t-1000).to_f)
-    addr._insert_point(4,(t-400).to_f)
-    addr._insert_point(5,(t-400).to_f)
-    addr._insert_point(6,(t-400).to_f)
+    node = Chawk.node(u.agent,"test:path")
+    node._insert_point(1,(t-1000).to_f)
+    node._insert_point(2,(t-1000).to_f)
+    node._insert_point(3,(t-1000).to_f)
+    node._insert_point(4,(t-400).to_f)
+    node._insert_point(5,(t-400).to_f)
+    node._insert_point(6,(t-400).to_f)
 
 
     get api_v1_node_since_path(node_id:"test:path",:from=>(t-1001).to_f), nil, :authorization => %{Token token="#{u.api_client_id}/#{u.api_keys.first.access_token}"}
