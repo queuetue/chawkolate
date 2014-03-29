@@ -2,6 +2,27 @@
 
 class CreateChawkBase < ActiveRecord::Migration
 	def up
+		create_table "chawk_ranges", force: true do |t|
+			t.string "subkey"
+			t.integer "parent_node_id"
+			t.integer "data_node_id"
+			t.float  "start_ts"
+			t.float  "stop_ts"
+			t.integer  "beats"
+			t.integer  "default"
+			t.timestamp "expires"
+			t.timestamps
+		end
+
+		create_table "chawk_usage_records", force: true do |t|
+			t.integer "agent_id"
+			t.integer "node_id"
+			t.string  "description"
+			t.float  "time"
+			t.float  "space"
+			t.timestamps
+		end
+
 		create_table "chawk_agents", force: true do |t|
 			t.integer "foreign_id"
 			t.string  "name",       limit: 200
