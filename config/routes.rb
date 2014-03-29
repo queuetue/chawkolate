@@ -26,13 +26,13 @@ Chawkolate::Application.routes.draw do
       end
       resources :nodes, :only=>[] do
         post :add_points
-        put :clear
+        put :clear_points
         put :increment
         put :decrement
         get :statistics
-        get :last
-        get :since
-        get :range
+        get :last_points
+        get :points_since
+        get :points_range
       end
     end
   end

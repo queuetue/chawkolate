@@ -1,1 +1,10 @@
-Welcome to your dashboard. <%= current_user.uid %>
+<h2>Welcome to your dashboard. </h2>
+
+
+<strong>Client Id:</strong><%= current_user.api_client_id %> <br />
+<% current_user.api_keys.each do |api_key| %>
+ <strong>Api Key:</strong> <%= api_key.access_token %> <%= api_key.expires %><br />
+<% end %>
+<% current_user.agent.nodes.each do |node| %>
+	<%= node.key %> <br />
+<% end %>
