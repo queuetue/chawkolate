@@ -10,14 +10,13 @@ class User < ActiveRecord::Base
 	belongs_to :agent, class_name: "Chawk::Models::Agent"
 
 	def self.find_for_google_oauth(auth)
-	  puts auth.to_json
 	  where(auth.slice(:provider, :uid)).first_or_create do |user|
 	      user.provider = auth.provider
 	      user.uid = auth.uid
 	      user.provider_email = auth.info.email
 	      user.email = auth.info.email
-	      user.name = auth.info.name   # assuming the user model has a name
-	      user.image_url = auth.info.picture # assuming the user model has an image
+	      user.name = auth.info.name
+	      user.image_url = auth.info.picture
 	  end
 	end
 
@@ -27,6 +26,7 @@ private
 		self.agent = Agent.create(name:self.uid)
 		save
 	end
+	
 	def create_api_key
 		self.api_client_id = SecureRandom.hex
 		self.api_keys << ApiKey.create 

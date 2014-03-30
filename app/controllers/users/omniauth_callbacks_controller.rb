@@ -13,4 +13,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  def after_sign_in_path_for(user)
+    user_path
+  end
+
 end
