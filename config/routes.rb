@@ -2,6 +2,10 @@ Chawkolate::Application.routes.draw do
 
   root :to => 'home#index'
 
+  resources :nodes do
+
+  end
+
   resource :user
 
   devise_for :user, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<div class="col-lg-12">
+<h1><%= @node.key %></h1>	
+<h2><%= @node.decription %></h2>	
+<%= link_to 'Edit This Node', edit_node_path(@node.key) %> |
+<%= link_to 'My Nodes', nodes_path %>
+</div>
+
+<div class="col-lg-6">
+	<h2>Users</h2>
+	<div class="table-responsive">
+	  <table class="table table-bordered table-hover table-striped tablesorter">
+	    <thead>
+	    </thead>
+	    <tbody>
+			<% current_user.agent.nodes.each do |node| %>
+				<%= node.key %> <br />
+			<% end %>
+	    </tbody>
+	  </table>
+	</div>
+</div>
+

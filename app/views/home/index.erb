@@ -1,21 +1,5 @@
-<div id="X">TEST</div>
 
-<% if current_user %>
-	x<%= current_user.inspect %>x
-<% else %>
-	<%= link_to "Sign in with Google", user_omniauth_authorize_path(:google_oauth2) %>
-<% end %>
 
-<table>
-<tr><th>Key</th><th>Value</th><th>Count</th><th>Min</th><th>Max</th></tr>
-<tr>
-	<td id="key">1</td>
-	<td id="value">1</td>
-	<td id="count">1</td>
-	<td id="min">1</td>
-	<td id="max">1</td>
-	<td id="updated">1</td>
-</tr>
 
 <script>
     // THIS IS DISABLED BECAUSE IN DEVELOPMENT MODE, IT LOCKS UP THE SERVER

@@ -10,6 +10,7 @@ gem 'omniauth-github'
 gem 'omniauth-google-oauth2'
 gem 'devise'
 gem 'nifty-generators'
+gem 'font-awesome-sass'
 #gem 'puma'
 
 

@@ -1,10 +1,56 @@
-<h2>Welcome to your dashboard. </h2>
+
+<div class="col-lg-6">
+	<h2>Your Series</h2>
+	<div class="table-responsive">
+	  <table class="table table-bordered table-hover table-striped tablesorter">
+	    <thead>
+	    	<tr><th>Key</th><th>Point</th><th>Value</th><th></th></tr>
+	    </thead>
+	    <tbody>
+			<% current_user.agent.nodes.each do |node| %>
+				<tr>
+					<td>
+						<%= node.key %>
+					</td>
+					<td>
+						<%= node.points.last ? node.points.last.value : 0%>
+					</td>
+					<td>
+						<%= node.values.last ? node.values.last.value : ""%>
+					</td>
+					<td>
+						<%= link_to "view", node_path(node.key) %> | <%= link_to "edit", edit_node_path(node.key) %>
+					</td>
+				</tr>
+			<% end %>
+	    </tbody>
+	  </table>
+	</div>
+</div>
 
 
-<strong>Client Id:</strong><%= current_user.api_client_id %> <br />
-<% current_user.api_keys.each do |api_key| %>
- <strong>Api Key:</strong> <%= api_key.access_token %> <%= api_key.expires %><br />
-<% end %>
-<% current_user.agent.nodes.each do |node| %>
-	<%= node.key %> <br />
-<% end %>
+<div class="col-lg-6">
+	<h2>Your Information</h2>
+	<div class="table-responsive">
+	  <table class="table table-bordered table-hover table-striped tablesorter">
+	    <thead>
+	    </thead>
+	    <tbody>
+			<tr><td width="120px"><strong>Name</strong></td><td><%= current_user.name %></td></tr>
+			<tr><td><strong>Client ID</strong></td><td><%= current_user.api_client_id %></td></tr>
+	    </tbody>
+	  </table>
+	</div>
+	<h2>Your Api Keys</h2>
+	<div class="table-responsive">
+	  <table class="table table-bordered table-hover table-striped tablesorter">
+	    <thead>
+	    </thead>
+	    <tbody>
+			<% current_user.api_keys.each do |api_key| %>
+				<tr><td><strong>Api Key</strong></td><td><%= api_key.access_token %></td></tr>
+			<% end %>
+	    </tbody>
+	  </table>
+	</div>
+</div>
