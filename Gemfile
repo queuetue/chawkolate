@@ -11,10 +11,10 @@ gem 'omniauth-google-oauth2'
 gem 'devise'
 gem 'nifty-generators'
 gem 'font-awesome-sass'
-#gem 'puma'
 
-
-#gem 'pg'
+group :production do
+  gem 'pg'
+end 
 
 group :development do
 	gem "dotenv"
@@ -24,7 +24,6 @@ group :development do
 end
 
 group :test do
-	gem 'sqlite3'
 end
 
 # Use SCSS for stylesheets
@@ -65,8 +64,9 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-
+gem 'sqlite3', :group=> [:test, :developemnt]
 gem 'rspec-rails', :group=> [:test, :developemnt]
+
 group :test do
 	gem "factory_girl_rails"
 	gem "capybara"
