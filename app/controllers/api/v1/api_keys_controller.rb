@@ -3,7 +3,7 @@ require 'authentic'
 
 class Api::V1::ApiKeysController < ApplicationController
   respond_to :json
-  include Api::V1::Authentic
+  include Authentic
 
   protect_from_forgery with: :null_session
   before_filter :restrict_access, :only=>[:reset]
