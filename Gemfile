@@ -12,6 +12,9 @@ gem 'devise'
 gem 'nifty-generators'
 gem 'font-awesome-sass'
 
+gem 'faye'
+gem 'thin'
+
 group :production do
   gem 'pg'
 end 
@@ -20,7 +23,6 @@ group :development do
 	gem "dotenv"
   gem "better_errors"
   gem 'meta_request'
-	gem 'sqlite3'
 end
 
 group :test do

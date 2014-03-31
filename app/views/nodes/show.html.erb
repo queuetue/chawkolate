@@ -8,17 +8,75 @@
 </div>
 
 <div class="col-lg-6">
-	<h2>Users</h2>
+	<h2>Points</h2>
 	<div class="table-responsive">
 	  <table class="table table-bordered table-hover table-striped tablesorter">
 	    <thead>
 	    </thead>
-	    <tbody>
-			<% current_user.agent.nodes.each do |node| %>
-				<%= node.key %> <br />
+	    <tbody id="data">
+	    	<% if @node.points.length > 0 %>
+				<% @node.points.each do |point| %>
+					<tr><td><%= point.value %> </td></tr>
+				<% end %>
+			<% else %>
+				<tr><td>No Points have been set.</td></tr>
+			<% end %>
+
+	    </tbody>
+	  </table>
+	</div>
+</div>
+
+<div class="col-lg-6">
+	<h2>Values</h2>
+	<div class="table-responsive">
+	  <table class="table table-bordered table-hover table-striped tablesorter">
+	    <thead>
+	    </thead>
+	    <tbody id="data">
+	    	<% if @node.values.length > 0 %>
+				<% @node.values.each do |val| %>
+					<tr><td><%= val.value %> </td></tr>
+				<% end %>
+			<% else %>
+					<tr><td>No Values have been set.</td></tr>
 			<% end %>
 	    </tbody>
 	  </table>
 	</div>
 </div>
 
+<script>
+    var client = new Faye.Client('http://<%= request.host %>:9292/faye/',{
+    	timeout:120,
+    	retry:5,
+    });
+
+	var subscription = client.subscribe("/node/change/<%=@node.key%>", function(message) {
+	    refreshData();
+	});
+
+
+function readCookie(name) {
+    var nameEQ = escape(name) + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return unescape(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+}
+
+var refreshData = function() {
+
+    $.getJSON( '/api/v1/nodes/<%= @node.key %>/last_points', function(data) {
+    	tableData = $('#data');
+    	tableData.html('');
+        data.data.forEach(function(entry){
+        	tableData.append('<tr><td>' + entry.v + '</td></tr>');
+        })
+    });
+}
+
+</script>

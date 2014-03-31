@@ -6,9 +6,9 @@ class Api::V1::NodesController < ApplicationController
 
   protect_from_forgery with: :null_session
   before_filter :restrict_access
-  before_filter :restrict_access_by_key, :only=>[:last,:range, :since,:add_points,:increment,:decrement,:clear,:statistics]
+  before_filter :restrict_access_by_key, :only=>[:last_points,:range, :since,:add_points,:increment,:decrement,:clear,:statistics]
 
-  include Api::V1::Authentic
+  include Authentic
 
   def clear
     @node.points.destroy_all
@@ -52,7 +52,7 @@ class Api::V1::NodesController < ApplicationController
     payload_out
   end
 
-  def last
+  def last_points
     if @node.points.length > 0
       i = 0
       payload_out @node.points.last(1000).collect {|point| point_for_transport point,i+=1}
@@ -92,9 +92,19 @@ class Api::V1::NodesController < ApplicationController
 private
 
   def publish(data)
-    key = "/node/#{@node.key}:change"
-      logger.info "publish #{key} - #{data}"
-    Redis.new.publish(key , {"data"=>data}.to_json)
+    key = "/node/change/#{@node.key}"
+    logger.info "publish #{key} - #{data}"
+    EM.run do
+      client = Faye::Client.new('http://localhost:9292/faye')
+      publication = client.publish(key, {"text" => "OK"})
+      publication.callback do
+        EM.stop_event_loop
+      end
+      publication.errback do |error|
+          EM.stop_event_loop
+      end
+    end
+    #Redis.new.publish(key , {"data"=>data}.to_json)
   end
 
   def do_meta
@@ -119,10 +129,12 @@ private
   def payload_out (data = nil,message = nil)
     payload = {
       "node"=>@node.key,
-      "prepared_at"=>Time.now,
-      "key_expires"=>@api_key.expires
+      "prepared_at"=>Time.now
     }
 
+    if @api_key
+      payload["key_expires"]=@api_key.expires
+    end
     if message
       payload["message"] = message
     end
@@ -139,8 +151,8 @@ private
       @last = @node.points.last
       last_items = point_for_transport(@last)
       payload["last"]=last_items
-      payload["max"]=@node.max
-      payload["min"]=@node.min
+      #payload["max"]=@node.max
+      #payload["min"]=@node.min
       payload["length"] = @node.points.length
     end
     publish payload
