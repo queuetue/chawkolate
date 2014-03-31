@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem "dotenv"
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.4'
 gem 'chawk_rails', "0.3.0"
@@ -25,7 +27,6 @@ group :production do
 end 
 
 group :development do
-	gem "dotenv"
   gem "better_errors"
   gem 'meta_request'
 end
